@@ -11,4 +11,4 @@ RUN ng build --prod
 FROM nginx AS runner
 
 # Copy distribution files to nginx
-COPY --from=builder /app/dist/toureiro/ /usr/share/nginx/html/
+COPY --from=builder /app/dist/ /usr/share/nginx/html/
