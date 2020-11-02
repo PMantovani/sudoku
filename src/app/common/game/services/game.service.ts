@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Board } from '../../board/board';
 import { Cell } from '../../cell/cell';
 import { GameDifficulty } from '../game-difficulty';
-import { SudokuSolverError } from './sudoku-solver-error';
 
 @Injectable({
   providedIn: 'root'
@@ -26,51 +26,75 @@ export class GameService {
     this.configuredGameDifficulty = difficulty;
   }
 
-  public createGame(): Board {
+  public createGame(): Observable<Board> {
+    return new Observable(subscriber => {
+      setTimeout(() => {
+        subscriber.next(this.buildGame());
+        subscriber.complete();
+      });
+    });
+  }
+
+  private buildGame(): Board {
     const board = this.initializeBlankBoard();
 
-    try {
-      const solution = this.solveGame(board);
+    const solutionFound = this.solveGame(board);
+    if (solutionFound === 0) {
+      // Unsolvable game. Retrying with a different seed...
+      return this.buildGame();
+    }
 
-      // Set all cells as fixed values
-      for (let row = 0; row < this.getBoardSize(); row++) {
-        for (let col = 0; col < this.getBoardSize(); col++) {
-          board.cells[row][col].fixedValue = board.cells[row][col].currentValue;
-        }
-      }
-
-      // Remove some values so user can fill them, according to game difficulty
-      const wantedBlankCells = this.getNumberOfBlankCellsForDifficulty(this.getGameDifficulty());
-      for (let i = 0; i < wantedBlankCells; i++) {
-        const rowIndex = this.getRandomNumberInBoardRange();
-        const colIndex = this.getRandomNumberInBoardRange();
-
-        if (solution.cells[rowIndex][colIndex].currentValue === undefined) {
-          i--;
-        } else {
-          solution.cells[rowIndex][colIndex].currentValue = undefined;
-          solution.cells[rowIndex][colIndex].fixedValue = undefined;
-        }
-      }
-      return solution;
-
-    } catch (e) {
-      if (e instanceof SudokuSolverError) {
-        // Unsolvable game. Retrying with a different seed...
-        return this.createGame();
+    // Set all cells as fixed values
+    for (let row = 0; row < this.getBoardSize(); row++) {
+      for (let col = 0; col < this.getBoardSize(); col++) {
+        board.cells[row][col].fixedValue = board.cells[row][col].currentValue;
       }
     }
 
+    // Remove some values so user can fill them, according to game difficulty
+    const wantedBlankCells = this.getNumberOfBlankCellsForDifficulty(this.getGameDifficulty());
+    for (let i = 0; i < wantedBlankCells; i++) {
+      const rowIndex = this.getRandomNumberInBoardRange();
+      const colIndex = this.getRandomNumberInBoardRange();
+
+      if (board.cells[rowIndex][colIndex].currentValue === undefined) {
+        i--;
+      } else {
+        board.cells[rowIndex][colIndex].currentValue = undefined;
+        board.cells[rowIndex][colIndex].fixedValue = undefined;
+      }
+    }
+
+    const solutionsFound = this.solveGame(board, false);
+    if (solutionsFound > 1) {
+      // Valid sudoku puzzle only has one possible solution. If more than one was found, create another puzzle.
+      return this.buildGame();
+    }
+
+    return board;
   }
 
-  public solveGame(board: Board): Board {
+  public solveGame(board: Board, stopOnFirstSolution = true): number {
     let nextRow = 0;
     let nextCol = 0;
     let moveForward = true;
     const cellGuesses = this.initializeCellGuesses();
+    let solutionsFound = 0;
 
     while (nextRow < this.getBoardSize()) {
+      if (nextRow === -1) {
+        // If row is negative, it means that backtracking went too far and no solution was found.
+        return solutionsFound;
+      }
+
       moveForward = this.guessCell(board, nextRow, nextCol, moveForward, cellGuesses);
+
+      if (!stopOnFirstSolution && moveForward && (nextRow === this.getBoardSize() - 1) && (nextCol === this.getBoardSize() - 1)) {
+        solutionsFound++;
+        this.fillSolutionFields(board);
+        moveForward = false;
+      }
+
       if (moveForward) {
         nextRow = (nextCol + 1) === this.getBoardSize() ? (nextRow + 1) : nextRow;
         nextCol = (nextCol + 1) === this.getBoardSize() ? 0 : (nextCol + 1);
@@ -80,13 +104,10 @@ export class GameService {
       }
     }
 
-    for (let row = 0; row < this.getBoardSize(); row++) {
-      for (let col = 0; col < this.getBoardSize(); col++) {
-        board.cells[row][col].solution = board.cells[row][col].currentValue;
-      }
-    }
+    solutionsFound++;
+    this.fillSolutionFields(board);
 
-    return board;
+    return solutionsFound;
   }
 
   private initializeBlankBoard(): Board {
@@ -158,10 +179,6 @@ export class GameService {
   }
 
   private guessCell(board: Board, row: number, col: number, movingForward: boolean, cellGuesses: CellGuesses): boolean {
-    // If row is negative, it means that backtracking went too far and no solution was found.
-    if (row === -1) {
-      throw new SudokuSolverError();
-    }
     const cell = board.cells[row][col];
     if (cell.fixedValue === undefined) {
       const availableValues = this.getAvailableValuesForCell(board, cell);
@@ -173,6 +190,8 @@ export class GameService {
 
       if (cell.currentValue !== undefined) {
         cellGuesses.guesses[cell.rowPosition][cell.colPosition].add(cell.currentValue);
+      } else {
+        cellGuesses.guesses[cell.rowPosition][cell.colPosition].clear();
       }
     }
 
@@ -193,6 +212,14 @@ export class GameService {
         return 45;
       case GameDifficulty.HARD:
         return 50;
+    }
+  }
+
+  private fillSolutionFields(board: Board): void {
+    for (let row = 0; row < this.getBoardSize(); row++) {
+      for (let col = 0; col < this.getBoardSize(); col++) {
+        board.cells[row][col].solution = board.cells[row][col].currentValue;
+      }
     }
   }
 }

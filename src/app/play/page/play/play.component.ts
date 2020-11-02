@@ -10,6 +10,7 @@ import { GameService } from 'src/app/common/game/services/game.service';
 })
 export class PlayComponent implements OnInit {
 
+  public buildingGame = false;
   public dificulties = GameDifficulty;
   public gameInProgress = false;
   public resetClockEvent = new EventEmitter<void>();
@@ -26,9 +27,13 @@ export class PlayComponent implements OnInit {
 
   public startNewGame(): void {
     this.gameSolved = false;
-    this.board = this.gameService.createGame();
+    this.buildingGame = true;
+    this.gameService.createGame().subscribe(board => {
+      this.board = board;
+      this.buildingGame = false;
+      this.resetClockEvent.emit();
+    });
     this.gameInProgress = true;
-    this.resetClockEvent.emit();
   }
 
   public resetGame(): void {

@@ -19,15 +19,17 @@
     </div>
 
     <div class="config-entry">
-      <button (click)="this.startNewGame()">Novo Jogo</button>
+      <button *ngIf="!this.buildingGame" (click)="this.startNewGame()">Novo Jogo</button>
+      <button *ngIf="this.buildingGame" [disabled]="true">Carregando...</button>
     </div>
   </div>
 
   <div class="game-container">
     <div class="solved-msg" *ngIf="this.gameSolved">Parabéns! Você concluiu este jogo!</div>
-    <app-clock *ngIf="this.gameInProgress" [resetClockEvent]="this.resetClockEvent" [pauseClockEvent]="this.gameSolvedEvent"></app-clock>
-    <app-board *ngIf="this.gameInProgress" [board]="this.board" (cellValueChanged)="this.checkBoard()"></app-board>
-    <button *ngIf="!this.gameInProgress" (click)="this.startNewGame()" >Novo Jogo</button>
+    <app-clock *ngIf="this.gameInProgress && !this.buildingGame" [resetClockEvent]="this.resetClockEvent" [pauseClockEvent]="this.gameSolvedEvent"></app-clock>
+    <app-board *ngIf="this.gameInProgress && !this.buildingGame" [board]="this.board" (cellValueChanged)="this.checkBoard()"></app-board>
+    <button *ngIf="!this.gameInProgress && !this.buildingGame" (click)="this.startNewGame()" >Novo Jogo</button>
+    <p *ngIf="this.buildingGame">Carregando novo jogo...</p>
   </div>
 
 </div>
