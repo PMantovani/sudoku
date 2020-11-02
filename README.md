@@ -1,27 +1,14 @@
 # Sudoku
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
+![Prod check](https://github.com/PMantovani/sudoku/workflows/Prod%20check/badge.svg)
 
-## Development server
+Esse projeto é um jogo de Sudoku para se jogar diretamente no browser. Toda a geração e solução de novos jogos é feita diretamente no código do frontend, então essa aplicação funciona sozinha, sem nenhum backend necessário.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Para deploy, foi utilizado o Cloud Run do GCP, que roda através de um container nginx buildado através do resultado compilado do frontend, que funciona com o framework Angular 10.
+Um workflow do GitHub Action foi configurado para garantir que o build não quebrou a cada push para a branch main.
 
-## Code scaffolding
+A versão deployada está disponível em:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+https://sudoku-vmlanmhenq-uc.a.run.app/
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Para rodar localmente, basta rodar `ng serve`.
