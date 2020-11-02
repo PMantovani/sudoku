@@ -45,8 +45,12 @@ export class GameService {
         const rowIndex = this.getRandomNumberInBoardRange();
         const colIndex = this.getRandomNumberInBoardRange();
 
-        solution.cells[rowIndex][colIndex].currentValue = undefined;
-        solution.cells[rowIndex][colIndex].fixedValue = undefined;
+        if (solution.cells[rowIndex][colIndex].currentValue === undefined) {
+          i--;
+        } else {
+          solution.cells[rowIndex][colIndex].currentValue = undefined;
+          solution.cells[rowIndex][colIndex].fixedValue = undefined;
+        }
       }
       return solution;
 
@@ -186,9 +190,9 @@ export class GameService {
       case GameDifficulty.EASY:
         return 40;
       case GameDifficulty.MEDIUM:
-        return 50;
+        return 45;
       case GameDifficulty.HARD:
-        return 60;
+        return 50;
     }
   }
 }
