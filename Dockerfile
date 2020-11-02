@@ -9,4 +9,4 @@ RUN npm run build -- --prod
 FROM nginx AS runner
 
 # Copy distribution files to nginx
-COPY --from=builder /app/dist/ /usr/share/nginx/html/
+COPY --from=builder /app/dist/sudoku/ /usr/share/nginx/html/
