@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+select, option {
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color: rgb(86 148 104);
+  color: white;
+  border-width: 0;
+  cursor: pointer;
+}

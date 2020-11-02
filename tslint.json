@@ -152,6 +152,7 @@
     "cyclomatic-complexity": true,
     "prefer-const": true,
     "class-name": true,
-    "file-name-casing": [true, "kebab-case"]
+    "file-name-casing": [true, "kebab-case"],
+    "member-access": true
   }
 }

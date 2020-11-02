@@ -1,0 +1,5 @@
+<div class="board">
+  <div class="row" *ngFor="let cellRow of this.board.cells">
+    <app-cell *ngFor="let cell of cellRow" [cell]="cell" [blockSize]="this.blockSize" (valueChange)="this.cellValueChanged.emit()"></app-cell>
+  </div>
+</div>

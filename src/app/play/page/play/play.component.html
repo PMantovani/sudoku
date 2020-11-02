@@ -1,0 +1,34 @@
+<div class="play-container">
+
+  <div class="config-bar">
+    <div class="config-entry">
+      <label>Dificuldade</label>
+      <select (change)="this.onDifficultyChange($event.target.value)">
+        <option [value]="dificulties.EASY">Fácil</option>
+        <option [value]="dificulties.MEDIUM">Médio</option>
+        <option [value]="dificulties.HARD">Difícil</option>
+      </select>
+    </div>
+
+    <div class="config-entry">
+      <button *ngIf="this.gameInProgress" (click)="this.resetGame()">Reiniciar Jogo</button>
+    </div>
+
+    <div class="config-entry">
+      <button (click)="this.solveGame()">Solucionar Jogo</button>
+    </div>
+
+    <div class="config-entry">
+      <button (click)="this.startNewGame()">Novo Jogo</button>
+    </div>
+  </div>
+
+  <div class="game-container">
+    <div class="solved-msg" *ngIf="this.gameSolved">Parabéns! Você concluiu este jogo!</div>
+    <app-clock *ngIf="this.gameInProgress" [resetClockEvent]="this.resetClockEvent" [pauseClockEvent]="this.gameSolvedEvent"></app-clock>
+    <app-board *ngIf="this.gameInProgress" [board]="this.board" (cellValueChanged)="this.checkBoard()"></app-board>
+    <button *ngIf="!this.gameInProgress" (click)="this.startNewGame()" >Novo Jogo</button>
+  </div>
+
+</div>
+

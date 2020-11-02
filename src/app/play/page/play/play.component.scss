@@ -1,0 +1,42 @@
+div.play-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  div.config-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dedbc8;
+    padding: 10px;
+
+    * {
+      display: flex;
+      align-items: center;
+    }
+
+    div.config-entry {
+      padding: 10px;
+
+      & > *:not(:first-child) {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  div.game-container {
+
+    div.solved-msg {
+      font-weight: bold;
+      padding: 20px;
+      text-align: center;
+      font-size: 20px;
+      color: green;
+    }
+
+    margin: auto;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+  }
+}
