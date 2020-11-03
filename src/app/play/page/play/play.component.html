@@ -11,6 +11,16 @@
     </div>
 
     <div class="config-entry">
+      <label>Iluminar células</label>
+      <input type="checkbox" [(ngModel)]="this.gameConfig.highlightBlock">
+    </div>
+
+    <div class="config-entry">
+      <label>Iluminar valores</label>
+      <input type="checkbox" [(ngModel)]="this.gameConfig.highlightValue">
+    </div>
+
+    <div class="config-entry">
       <button *ngIf="this.gameInProgress" (click)="this.resetGame()">Reiniciar Jogo</button>
     </div>
 

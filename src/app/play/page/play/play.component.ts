@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Board } from 'src/app/common/board/board';
 import { GameDifficulty } from 'src/app/common/game/game-difficulty';
+import { GameConfigService } from 'src/app/common/game/services/game-config.service';
 import { GameService } from 'src/app/common/game/services/game.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class PlayComponent implements OnInit {
   public gameSolvedEvent = new EventEmitter<void>();
 
   constructor(
+    public gameConfig: GameConfigService,
     private gameService: GameService
   ) { }
 
@@ -56,12 +58,12 @@ export class PlayComponent implements OnInit {
   }
 
   public onDifficultyChange(newDifficulty: GameDifficulty): void {
-    this.gameService.setGameDifficulty(newDifficulty);
+    this.gameConfig.setGameDifficulty(newDifficulty);
   }
 
   private isGameSolved(): boolean {
-    for (let row = 0; row < this.gameService.getBoardSize(); row++) {
-      for (let col = 0; col < this.gameService.getBoardSize(); col++) {
+    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
+      for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
         if (this.board.cells[row][col].currentValue !== this.board.cells[row][col].solution) {
           return false;
         }

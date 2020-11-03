@@ -7,11 +7,16 @@
   border: 1px rgba(127, 127, 127, 0.5) solid;
 
   &.fixed-value {
+    color: rgb(84, 84, 84);
     background-color: rgba(224, 224, 224, 0.5);
   }
 
-  &:focus {
+  &:focus, &.highlight {
     background-color: rgba(223, 191, 87, 0.5);
+  }
+
+  &.highlight-value {
+    background-color: #9dca9d;
   }
 
   &.top-border {

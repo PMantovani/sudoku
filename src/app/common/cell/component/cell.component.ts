@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { GameConfigService } from '../../game/services/game-config.service';
 import { Cell } from '../cell';
 
 @Component({
@@ -12,10 +13,12 @@ export class CellComponent implements OnInit {
   @Input() public blockSize: number;
   @Input() public cellHighlightEvent: EventEmitter<Cell>;
   @Output() public valueChange: EventEmitter<void> = new EventEmitter();
+  @Output() public cellFocusEvent = new EventEmitter<Cell>();
 
   public highlightCell: boolean;
+  public highlightValue: boolean;
 
-  constructor() { }
+  constructor(private gameConfig: GameConfigService) { }
 
   public ngOnInit(): void {
     this.cellHighlightEvent?.subscribe(
@@ -31,15 +34,33 @@ export class CellComponent implements OnInit {
     }
     event.preventDefault();
     this.valueChange.emit();
+    // Emit focus event to show value css class
+    this.cellFocusEvent.emit(this.cell);
+  }
+
+  public onCellFocus(): void {
+    this.cellFocusEvent.emit(this.cell);
   }
 
   private processCellHighlight(highlightedCell: Cell): void {
     this.highlightCell = this.shouldHighlightCell(highlightedCell);
+    this.highlightValue = this.shouldHighlightValue(highlightedCell);
   }
 
   private shouldHighlightCell(highlightedCell: Cell): boolean {
-    return highlightedCell.colPosition === this.cell.colPosition ||
-        highlightedCell.rowPosition === this.cell.rowPosition;
+    const highlightedRowBlock = Math.floor(highlightedCell.rowPosition / 3);
+    const highlightedColBlock = Math.floor(highlightedCell.colPosition / 3);
+    const cellRowBlock = Math.floor(this.cell.rowPosition / 3);
+    const cellColBlock = Math.floor(this.cell.colPosition / 3);
+
+    return this.gameConfig.highlightBlock && (highlightedCell.colPosition === this.cell.colPosition ||
+        highlightedCell.rowPosition === this.cell.rowPosition ||
+        (highlightedRowBlock === cellRowBlock && highlightedColBlock === cellColBlock));
+  }
+
+  private shouldHighlightValue(highlightedCell: Cell): boolean {
+    return this.gameConfig.highlightValue &&
+        this.cell.currentValue !== undefined && highlightedCell.currentValue === this.cell.currentValue;
   }
 
 }

@@ -6,9 +6,11 @@
     'bottom-border': cell.rowPosition === (this.blockSize * 3) - 1,
     'left-border': (cell.colPosition % this.blockSize) === 0,
     'right-border': cell.colPosition === (this.blockSize * 3) - 1,
-    'fixed-value': this.cell.fixedValue
+    'fixed-value': this.cell.fixedValue,
+    'highlight': this.highlightCell,
+    'highlight-value': this.highlightValue
   }"
   [ngModel]="this.cell.fixedValue ? this.cell.fixedValue : this.cell.currentValue"
-  [disabled]="this.cell.fixedValue"
   (keydown)="this.processModelChange($event)"
+  (focus)="this.onCellFocus()"
 />

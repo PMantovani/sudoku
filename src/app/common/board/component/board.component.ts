@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { GameService } from '../../game/services/game.service';
+import { Cell } from '../../cell/cell';
+import { GameConfigService } from '../../game/services/game-config.service';
 import { Board } from '../board';
 
 @Component({
@@ -13,13 +14,18 @@ export class BoardComponent implements OnInit {
 
   public blockSize: number;
   public gameSolved = false;
+  public cellFocusEvent = new EventEmitter<Cell>();
 
   constructor(
-    private gameService: GameService
+    private gameConfig: GameConfigService
   ) { }
 
   public ngOnInit(): void {
-    this.blockSize = this.gameService.getBoardSize() / 3;
+    this.blockSize = this.gameConfig.getBoardSize() / 3;
+  }
+
+  public onCellFocus(cell: Cell): void {
+    this.cellFocusEvent.emit(cell);
   }
 
 }
