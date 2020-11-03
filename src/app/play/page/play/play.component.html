@@ -15,7 +15,7 @@
     </div>
 
     <div class="config-entry">
-      <button (click)="this.solveGame()">Solucionar Jogo</button>
+      <button *ngIf="this.gameInProgress" (click)="this.solveGame()">Solucionar Jogo</button>
     </div>
 
     <div class="config-entry">
