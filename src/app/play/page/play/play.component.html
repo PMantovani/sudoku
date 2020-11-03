@@ -1,37 +1,41 @@
 <div class="play-container">
 
   <div class="config-bar">
-    <div class="config-entry">
-      <label>Dificuldade</label>
-      <select (change)="this.onDifficultyChange($event.target.value)">
-        <option [value]="dificulties.EASY">Fácil</option>
-        <option [value]="dificulties.MEDIUM">Médio</option>
-        <option [value]="dificulties.HARD">Difícil</option>
-      </select>
-    </div>
+    <button class="expand-menu-button" (click)="this.expandedMenu = !this.expandedMenu">Menu</button>
 
-    <div class="config-entry">
-      <label>Iluminar células</label>
-      <input type="checkbox" [(ngModel)]="this.gameConfig.highlightBlock">
-    </div>
+    <ng-container *ngIf="this.expandedMenu">
+      <div class="config-entry">
+        <label>Dificuldade</label>
+        <select (change)="this.onDifficultyChange($event.target.value)">
+          <option [value]="dificulties.EASY">Fácil</option>
+          <option [value]="dificulties.MEDIUM">Médio</option>
+          <option [value]="dificulties.HARD">Difícil</option>
+        </select>
+      </div>
 
-    <div class="config-entry">
-      <label>Iluminar valores</label>
-      <input type="checkbox" [(ngModel)]="this.gameConfig.highlightValue">
-    </div>
+      <div class="config-entry">
+        <label>Iluminar células</label>
+        <input type="checkbox" [(ngModel)]="this.gameConfig.highlightBlock">
+      </div>
 
-    <div class="config-entry">
-      <button *ngIf="this.gameInProgress" (click)="this.resetGame()">Reiniciar Jogo</button>
-    </div>
+      <div class="config-entry">
+        <label>Iluminar valores</label>
+        <input type="checkbox" [(ngModel)]="this.gameConfig.highlightValue">
+      </div>
 
-    <div class="config-entry">
-      <button *ngIf="this.gameInProgress" (click)="this.solveGame()">Solucionar Jogo</button>
-    </div>
+      <div class="config-entry">
+        <button *ngIf="this.gameInProgress" (click)="this.resetGame()">Reiniciar Jogo</button>
+      </div>
 
-    <div class="config-entry">
-      <button *ngIf="!this.buildingGame" (click)="this.startNewGame()">Novo Jogo</button>
-      <button *ngIf="this.buildingGame" [disabled]="true">Carregando...</button>
-    </div>
+      <div class="config-entry">
+        <button *ngIf="this.gameInProgress" (click)="this.solveGame()">Solucionar Jogo</button>
+      </div>
+
+      <div class="config-entry">
+        <button *ngIf="!this.buildingGame" (click)="this.startNewGame()">Novo Jogo</button>
+        <button *ngIf="this.buildingGame" [disabled]="true">Carregando...</button>
+      </div>
+    </ng-container>
   </div>
 
   <div class="game-container">

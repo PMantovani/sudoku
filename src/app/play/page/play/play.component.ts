@@ -18,6 +18,7 @@ export class PlayComponent implements OnInit {
   public board: Board;
   public gameSolved = false;
   public gameSolvedEvent = new EventEmitter<void>();
+  public expandedMenu = true;
 
   constructor(
     public gameConfig: GameConfigService,

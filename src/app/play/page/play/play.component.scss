@@ -10,6 +10,18 @@ div.play-container {
     background-color: #dedbc8;
     padding: 10px;
 
+    @media (max-width: 1000px) {
+      flex-direction: column;
+
+      button.expand-menu-button {
+        display: flex;
+      }
+    }
+
+    .expand-menu-button {
+      display: none;
+    }
+
     * {
       display: flex;
       align-items: center;
