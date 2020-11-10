@@ -5,7 +5,9 @@
         [blockSize]="this.blockSize"
         (valueChange)="this.cellValueChanged.emit()"
         [cellHighlightEvent]="this.cellFocusEvent"
-        (cellFocusEvent)="this.onCellFocus($event)">
+        (cellFocusEvent)="this.onCellFocus($event)"
+        (navigationArrowPress)="this.onCellNavigation(cell, $event)"
+        [navigationFocusEvent]="this.navigationEvent">
     </app-cell>
   </div>
 </div>
