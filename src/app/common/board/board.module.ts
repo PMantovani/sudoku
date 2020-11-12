@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BoardComponent } from '../component/board.component';
-import { CellModule } from '../../cell/module/cell.module';
+import { BoardComponent } from './component/board.component';
+import { CellModule } from '../cell/cell.module';
 
 
 
