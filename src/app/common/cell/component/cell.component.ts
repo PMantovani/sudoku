@@ -49,7 +49,7 @@ export class CellComponent implements OnInit {
     }
     event.preventDefault();
 
-    if (!relevantKey) {
+    if (relevantKey) {
       this.valueChange.emit();
       // Emit focus event to show value css class
       this.cellFocusEvent.emit(this.cell);
