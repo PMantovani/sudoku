@@ -6,7 +6,9 @@
     <ng-container *ngIf="this.expandedMenu">
       <div class="config-entry">
         <label>Dificuldade</label>
-        <select (change)="this.onDifficultyChange($event.target.value)">
+        <select
+          [ngModel]="this.gameConfig.getGameDifficulty()"
+          (change)="this.onDifficultyChange($event.target.value)">
           <option [value]="dificulties.EASY">Fácil</option>
           <option [value]="dificulties.MEDIUM">Médio</option>
           <option [value]="dificulties.HARD">Difícil</option>
