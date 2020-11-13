@@ -19,6 +19,8 @@ jobs:
       - name: Installing Dependencies
         run: npm install
       - name: Lint
-        run: npm run ng lint
+        run: npm run lint
       - name: Build
         run: npm run build -- --prod
+      - name: Tests e2e
+        run: npm run e2e
