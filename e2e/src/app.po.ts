@@ -22,11 +22,23 @@ export class AppPage {
     return element.all(by.css(`input.cell`)).filter(e => e.getAttribute('value').then(curValue => curValue === value));
   }
 
+  public clickOnAnyCell(): void {
+    element.all(by.css(`.cell`)).first().click();
+  }
+
+  public getRelatedHighlightedCells(): ElementArrayFinder {
+    return element.all(by.css(`.highlight`));
+  }
+
   public getCellsWithHighlightedValue(value: string): ElementArrayFinder {
     return element.all(by.css(`input.cell.highlight-value`)).filter(e => e.getAttribute('value').then(curValue => curValue === value));
   }
 
-  public clickHighlightCellConfigButton(): void {
+  public clickHighlightValueCellConfigButton(): void {
     element(by.xpath('//label[.="Iluminar valores"]/..//input')).click();
+  }
+
+  public clickHighlightRelatedCellConfigButton(): void {
+    element(by.xpath('//label[.="Iluminar células"]/..//input')).click();
   }
 }

@@ -41,10 +41,20 @@ describe('Sudoku App', () => {
   it('should not highlight cells of same value when highlight config is off', () => {
     page.navigateTo();
     page.selectGameDifficulty('Fácil');
-    page.clickHighlightCellConfigButton();
+    page.clickHighlightValueCellConfigButton();
     page.clickNewGameButton();
     page.getCellsWithValue('1').first().click();
     expect(page.getCellsWithHighlightedValue('1').count()).toBe(0);
+  });
+
+  it('should highlight all 21 related cells after clicking in a cell and unhighlight after deselecting option', () => {
+    page.navigateTo();
+    page.clickNewGameButton();
+    expect(page.getRelatedHighlightedCells().count()).toBe(0);
+    page.clickOnAnyCell();
+    expect(page.getRelatedHighlightedCells().count()).toBe(21);
+    page.clickHighlightRelatedCellConfigButton();
+    expect(page.getRelatedHighlightedCells().count()).toBe(0);
   });
 
   afterEach(async () => {
