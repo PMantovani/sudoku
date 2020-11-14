@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NavigationDirection } from '../../board/navigation-direction';
 import { GameConfigService } from '../../game/services/game-config.service';
 import { Cell } from '../cell';
@@ -20,8 +21,7 @@ export class CellComponent implements OnInit {
 
   @ViewChild('cellInput') public cellInput: ElementRef<HTMLInputElement>;
 
-  public highlightCell: boolean;
-  public highlightValue: boolean;
+  private lastHighlightedCell?: Cell;
 
   constructor(private gameConfig: GameConfigService) { }
 
@@ -60,25 +60,28 @@ export class CellComponent implements OnInit {
     this.cellFocusEvent.emit(this.cell);
   }
 
-  private processCellHighlight(highlightedCell: Cell): void {
-    this.highlightCell = this.shouldHighlightCell(highlightedCell);
-    this.highlightValue = this.shouldHighlightValue(highlightedCell);
+  private processCellHighlight(highlightedCell?: Cell): void {
+    this.lastHighlightedCell = highlightedCell;
   }
 
-  private shouldHighlightCell(highlightedCell: Cell): boolean {
-    const highlightedRowBlock = Math.floor(highlightedCell.rowPosition / 3);
-    const highlightedColBlock = Math.floor(highlightedCell.colPosition / 3);
+  public shouldHighlightCell(): boolean {
+    if (this.lastHighlightedCell === undefined) {
+      return false;
+    }
+
+    const highlightedRowBlock = Math.floor(this.lastHighlightedCell.rowPosition / 3);
+    const highlightedColBlock = Math.floor(this.lastHighlightedCell.colPosition / 3);
     const cellRowBlock = Math.floor(this.cell.rowPosition / 3);
     const cellColBlock = Math.floor(this.cell.colPosition / 3);
 
-    return this.gameConfig.highlightBlock && (highlightedCell.colPosition === this.cell.colPosition ||
-        highlightedCell.rowPosition === this.cell.rowPosition ||
+    return this.gameConfig.highlightBlock && (this.lastHighlightedCell.colPosition === this.cell.colPosition ||
+      this.lastHighlightedCell.rowPosition === this.cell.rowPosition ||
         (highlightedRowBlock === cellRowBlock && highlightedColBlock === cellColBlock));
   }
 
-  private shouldHighlightValue(highlightedCell: Cell): boolean {
-    return this.gameConfig.highlightValue &&
-        this.cell.currentValue !== undefined && highlightedCell.currentValue === this.cell.currentValue;
+  public shouldHighlightValue(): boolean {
+    return this.gameConfig.highlightValue && this.cell.currentValue !== undefined &&
+        this.lastHighlightedCell !== undefined && this.lastHighlightedCell.currentValue === this.cell.currentValue;
   }
 
   private checkNavigationCoordinatesForFocus(coordinates: {row: number, col: number}): void {

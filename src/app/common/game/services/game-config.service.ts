@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { StorageService } from '../../storage/services/storage.service';
 import { GameDifficulty } from '../game-difficulty';
 

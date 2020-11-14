@@ -8,8 +8,8 @@
     'left-border': (cell.colPosition % this.blockSize) === 0,
     'right-border': cell.colPosition === (this.blockSize * 3) - 1,
     'fixed-value': this.cell.fixedValue,
-    'highlight': this.highlightCell,
-    'highlight-value': this.highlightValue
+    'highlight': this.shouldHighlightCell(),
+    'highlight-value': this.shouldHighlightValue()
   }"
   [ngModel]="this.cell.fixedValue ? this.cell.fixedValue : this.cell.currentValue"
   (keydown)="this.processModelChange($event)"
