@@ -7,8 +7,7 @@
       <div class="config-entry">
         <label>Dificuldade</label>
         <select
-          [ngModel]="this.gameConfig.getGameDifficulty()"
-          (change)="this.onDifficultyChange($event.target.value)">
+          [(ngModel)]="this.gameConfig.gameDifficulty">
           <option [value]="dificulties.EASY">Fácil</option>
           <option [value]="dificulties.MEDIUM">Médio</option>
           <option [value]="dificulties.HARD">Difícil</option>

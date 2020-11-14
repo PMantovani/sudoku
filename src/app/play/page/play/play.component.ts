@@ -59,12 +59,12 @@ export class PlayComponent implements OnInit {
   }
 
   public onDifficultyChange(newDifficulty: GameDifficulty): void {
-    this.gameConfig.setGameDifficulty(newDifficulty);
+    this.gameConfig.gameDifficulty = newDifficulty;
   }
 
   private isGameSolved(): boolean {
-    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
-      for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
+    for (let row = 0; row < this.gameConfig.boardSize; row++) {
+      for (let col = 0; col < this.gameConfig.boardSize; col++) {
         if (this.board.cells[row][col].currentValue !== this.board.cells[row][col].solution) {
           return false;
         }

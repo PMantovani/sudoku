@@ -31,14 +31,14 @@ export class GameService {
     }
 
     // Set all cells as fixed values
-    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
-      for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
+    for (let row = 0; row < this.gameConfig.boardSize; row++) {
+      for (let col = 0; col < this.gameConfig.boardSize; col++) {
         board.cells[row][col].fixedValue = board.cells[row][col].currentValue;
       }
     }
 
     // Remove some values so user can fill them, according to game difficulty
-    const wantedBlankCells = this.getNumberOfBlankCellsForDifficulty(this.gameConfig.getGameDifficulty());
+    const wantedBlankCells = this.getNumberOfBlankCellsForDifficulty(this.gameConfig.gameDifficulty);
     for (let i = 0; i < wantedBlankCells; i++) {
       const rowIndex = this.getRandomNumberInBoardRange();
       const colIndex = this.getRandomNumberInBoardRange();
@@ -67,7 +67,7 @@ export class GameService {
     const cellGuesses = this.initializeCellGuesses();
     let solutionsFound = 0;
 
-    while (nextRow < this.gameConfig.getBoardSize()) {
+    while (nextRow < this.gameConfig.boardSize) {
       if (nextRow === -1) {
         // If row is negative, it means that backtracking went too far and no solution was found.
         return solutionsFound;
@@ -75,19 +75,19 @@ export class GameService {
 
       moveForward = this.guessCell(board, nextRow, nextCol, moveForward, cellGuesses);
 
-      if (!stopOnFirstSolution && moveForward && (nextRow === this.gameConfig.getBoardSize() - 1) &&
-          (nextCol === this.gameConfig.getBoardSize() - 1)) {
+      if (!stopOnFirstSolution && moveForward && (nextRow === this.gameConfig.boardSize - 1) &&
+          (nextCol === this.gameConfig.boardSize - 1)) {
         solutionsFound++;
         this.fillSolutionFields(board);
         moveForward = false;
       }
 
       if (moveForward) {
-        nextRow = (nextCol + 1) === this.gameConfig.getBoardSize() ? (nextRow + 1) : nextRow;
-        nextCol = (nextCol + 1) === this.gameConfig.getBoardSize() ? 0 : (nextCol + 1);
+        nextRow = (nextCol + 1) === this.gameConfig.boardSize ? (nextRow + 1) : nextRow;
+        nextCol = (nextCol + 1) === this.gameConfig.boardSize ? 0 : (nextCol + 1);
       } else {
         nextRow = nextCol === 0 ? (nextRow - 1) : nextRow;
-        nextCol = nextCol === 0 ? (this.gameConfig.getBoardSize() - 1) : (nextCol - 1);
+        nextCol = nextCol === 0 ? (this.gameConfig.boardSize - 1) : (nextCol - 1);
       }
     }
 
@@ -99,10 +99,10 @@ export class GameService {
 
   private initializeBlankBoard(): Board {
     const board: Board = { cells: [] };
-    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
+    for (let row = 0; row < this.gameConfig.boardSize; row++) {
       board.cells.push([]);
 
-      for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
+      for (let col = 0; col < this.gameConfig.boardSize; col++) {
         board.cells[row].push({
           rowPosition: row,
           colPosition: col,
@@ -118,10 +118,10 @@ export class GameService {
       guesses: []
     };
 
-    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
+    for (let row = 0; row < this.gameConfig.boardSize; row++) {
       cellGuesses.guesses.push([]);
 
-      for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
+      for (let col = 0; col < this.gameConfig.boardSize; col++) {
         cellGuesses.guesses[row].push(new Set());
       }
     }
@@ -130,19 +130,19 @@ export class GameService {
   }
 
   private getRandomNumberInBoardRange(): number {
-    return Math.floor(Math.random() * this.gameConfig.getBoardSize());
+    return Math.floor(Math.random() * this.gameConfig.boardSize);
   }
 
   private getAvailableValuesForCell(board: Board, cell: Cell): string[] {
     const availableValues = this.getAllValuesForGame();
 
-    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
+    for (let row = 0; row < this.gameConfig.boardSize; row++) {
       if (row !== cell.rowPosition) {
         availableValues.delete(board.cells[row][cell.colPosition].currentValue);
       }
     }
 
-    for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
+    for (let col = 0; col < this.gameConfig.boardSize; col++) {
       if (col !== cell.colPosition) {
         availableValues.delete(board.cells[cell.rowPosition][col].currentValue);
       }
@@ -203,8 +203,8 @@ export class GameService {
   }
 
   private fillSolutionFields(board: Board): void {
-    for (let row = 0; row < this.gameConfig.getBoardSize(); row++) {
-      for (let col = 0; col < this.gameConfig.getBoardSize(); col++) {
+    for (let row = 0; row < this.gameConfig.boardSize; row++) {
+      for (let col = 0; col < this.gameConfig.boardSize; col++) {
         board.cells[row][col].solution = board.cells[row][col].currentValue;
       }
     }

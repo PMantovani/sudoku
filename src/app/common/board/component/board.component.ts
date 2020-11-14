@@ -23,7 +23,7 @@ export class BoardComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.blockSize = this.gameConfig.getBoardSize() / 3;
+    this.blockSize = this.gameConfig.boardSize / 3;
   }
 
   public onCellFocus(cell: Cell): void {
@@ -49,14 +49,14 @@ export class BoardComponent implements OnInit {
     }
 
     if (row === -1) {
-      row = this.gameConfig.getBoardSize() - 1;
-    } else if (row === this.gameConfig.getBoardSize()) {
+      row = this.gameConfig.boardSize - 1;
+    } else if (row === this.gameConfig.boardSize) {
       row = 0;
     }
 
     if (col === -1) {
-      col = this.gameConfig.getBoardSize() - 1;
-    } else if (col === this.gameConfig.getBoardSize()) {
+      col = this.gameConfig.boardSize - 1;
+    } else if (col === this.gameConfig.boardSize) {
       col = 0;
     }
 

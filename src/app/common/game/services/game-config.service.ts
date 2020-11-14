@@ -17,15 +17,15 @@ export class GameConfigService {
     this.configuredGameDifficulty = this.storage.get<GameDifficulty>(this.DIFFICULTY_STORAGE_KEY) ?? GameDifficulty.EASY;
   }
 
-  public getBoardSize(): number {
+  public get boardSize(): number {
     return GameConfigService.DEFAULT_BOARD_SIZE;
   }
 
-  public getGameDifficulty(): GameDifficulty {
+  public get gameDifficulty(): GameDifficulty {
     return this.configuredGameDifficulty;
   }
 
-  public setGameDifficulty(difficulty: GameDifficulty): void {
+  public set gameDifficulty(difficulty: GameDifficulty) {
     this.configuredGameDifficulty = difficulty;
     this.storage.set<GameDifficulty>(this.DIFFICULTY_STORAGE_KEY, this.configuredGameDifficulty);
   }
