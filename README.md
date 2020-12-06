@@ -13,4 +13,5 @@ https://sudoku-vmlanmhenq-uc.a.run.app/
 
 Para rodar localmente, basta rodar `ng serve`.
 
+Os testes unitários podem ser executados com `ng test`.
 Os testes automatizados podem ser rodados com `ng e2e`.
