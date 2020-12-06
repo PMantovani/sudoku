@@ -23,6 +23,6 @@ jobs:
       - name: Build
         run: npm run build -- --prod
       - name: Unit Tests
-        run: npm run test
+        run: npm run test -- --watch=false
       - name: Tests e2e
         run: npm run e2e
